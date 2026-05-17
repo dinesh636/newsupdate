@@ -14,7 +14,7 @@ const App = () => {
 
   useEffect(() => {
     const fetchCategory = category === 'home' || category === 'general' ? 'general' : category;
-    const url = `https://newsapi.org/v2/top-headlines?country=us&category=${fetchCategory}&apiKey=${import.meta.env.VITE_API_KEY}&pageSize=40`
+    const url = `https://saurav.tech/NewsAPI/top-headlines/category/${fetchCategory}/us.json`;
 
     fetch(url)
       .then(res => res.json())
