@@ -15,6 +15,10 @@ Newsupdate is a modern, premium news portal built to provide live news across va
 - **Styling**: Vanilla CSS (Modern aesthetic with hover effects, gradients, and micro-animations)
 - **Language**: JavaScript (ES6+), HTML5
 
+Deployed Web Live Link : https://sparkling-churros-917666.netlify.app/
+
+
+
 ## Getting Started
 
 ### Prerequisites
