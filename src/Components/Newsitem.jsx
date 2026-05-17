@@ -2,18 +2,23 @@ import React from 'react'
 import defaultImg from '../assets/images.jpg';
 
 const Newsitem = ({ title, description, src, url, date }) => {
-  const displayTitle = title ? title.slice(0, 60) + "..." : "News Title Not Available";
-  const displayDesc = description ? description.slice(0, 80) + "..." : "Description not available for this particular news article snippet.";
-  const displayDate = new Date().toLocaleDateString();
+  const displayTitle = title ? title.slice(0, 60) + '...' : 'News Title Not Available'
+  const displayDesc = description ? description.slice(0, 80) + '...' : 'Description not available for this particular news article snippet.'
+  const displayDate = date ? new Date(date).toLocaleDateString() : new Date().toLocaleDateString()
 
   return (
     <div className="card h-100 border-0 rounded-0" style={{ backgroundColor: '#fff' }}>
       <div className="position-relative">
-        <img 
-          src={src ? src : defaultImg} 
-          style={{height: "150px", width: "100%", objectFit: 'cover'}} 
-          className="card-img-top rounded-0" 
-          alt="news" 
+        <img
+          src={src || defaultImg}
+          loading="lazy"
+          onError={(e) => {
+            e.target.onerror = null
+            e.target.src = defaultImg
+          }}
+          style={{ height: '150px', width: '100%', objectFit: 'cover' }}
+          className="card-img-top rounded-0"
+          alt="news"
         />
         <span className="badge bg-danger rounded-0 position-absolute bottom-0 start-0 m-2" style={{ fontSize: '9px' }}>NEWS</span>
       </div>

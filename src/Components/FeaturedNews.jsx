@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import defaultImg from '../assets/images.jpg';
 
-const FeaturedNews = ({ articles }) => {
+const FeaturedNews = ({ articles, loading }) => {
     const [centerIndexOffset, setCenterIndexOffset] = useState(0);
 
     const displayArticles = articles && articles.length >= 5 ? articles.slice(3, 8) : [];
@@ -28,7 +28,13 @@ const FeaturedNews = ({ articles }) => {
         setCenterIndexOffset(p => p + 1);
     };
 
-    if (displayArticles.length < 5) return <div className="p-4 bg-dark text-white text-center">Loading Featured News from API...</div>;
+    if (displayArticles.length < 5) {
+        return (
+            <div className="p-4 bg-dark text-white text-center" style={{ minHeight: '320px' }}>
+                {loading ? 'Loading featured news...' : 'Featured news is not available right now.'}
+            </div>
+        );
+    }
 
     const centerStory = centerArticles[finalCenterIndex];
 
@@ -38,7 +44,16 @@ const FeaturedNews = ({ articles }) => {
                 {/* Left Column */}
                 <div className="col-md-3 d-flex flex-column" style={{ gap: '4px' }}>
                     <a href={displayArticles[0].url || "#"} target="_blank" rel="noreferrer" className="position-relative d-block text-decoration-none" style={{ height: '220px' }}>
-                        <img src={displayArticles[0].urlToImage || defaultImg} className="w-100 h-100 object-fit-cover" alt="news" />
+                        <img
+                        src={displayArticles[0].urlToImage || defaultImg}
+                        loading="lazy"
+                        onError={(e) => {
+                            e.target.onerror = null
+                            e.target.src = defaultImg
+                        }}
+                        className="w-100 h-100 object-fit-cover"
+                        alt="news"
+                    />
                         <div className="position-absolute bottom-0 w-100 p-3" style={{ background: 'linear-gradient(transparent, rgba(0,0,0,0.8))' }}>
                             <span className="badge bg-primary rounded-0 mb-1" style={{ fontSize: '9px' }}>NEWS</span>
                             <h6 className="text-white fw-bold mb-1" style={{ fontSize: '13px' }}>{displayArticles[0].title ? displayArticles[0].title.slice(0, 50) + "..." : "No Title"}</h6>
@@ -46,7 +61,16 @@ const FeaturedNews = ({ articles }) => {
                         </div>
                     </a>
                     <a href={displayArticles[1].url || "#"} target="_blank" rel="noreferrer" className="position-relative d-block text-decoration-none" style={{ height: '220px' }}>
-                        <img src={displayArticles[1].urlToImage || defaultImg} className="w-100 h-100 object-fit-cover" alt="news" />
+                        <img
+                            src={displayArticles[1].urlToImage || defaultImg}
+                            loading="lazy"
+                            onError={(e) => {
+                                e.target.onerror = null
+                                e.target.src = defaultImg
+                            }}
+                            className="w-100 h-100 object-fit-cover"
+                            alt="news"
+                        />
                         <div className="position-absolute bottom-0 w-100 p-3" style={{ background: 'linear-gradient(transparent, rgba(0,0,0,0.8))' }}>
                             <h6 className="text-white fw-bold mb-1" style={{ fontSize: '13px' }}>{displayArticles[1].title ? displayArticles[1].title.slice(0, 50) + "..." : "No Title"}</h6>
                             <span className="text-white-50" style={{ fontSize: '10px' }}><i className="bi bi-clock"></i> {new Date().toLocaleDateString()}</span>
@@ -57,7 +81,16 @@ const FeaturedNews = ({ articles }) => {
                 {/* Center Column */}
                 <div className="col-md-6" style={{ paddingLeft: '2px', paddingRight: '2px' }}>
                     <a href={centerStory.url || "#"} target="_blank" rel="noreferrer" className="position-relative d-block h-100 text-decoration-none">
-                        <img src={centerStory.urlToImage || defaultImg} className="w-100 h-100 object-fit-cover" alt="Main feature" />
+                        <img
+                            src={centerStory.urlToImage || defaultImg}
+                            loading="lazy"
+                            onError={(e) => {
+                                e.target.onerror = null
+                                e.target.src = defaultImg
+                            }}
+                            className="w-100 h-100 object-fit-cover"
+                            alt="Main feature"
+                        />
                         <span className="badge bg-danger rounded-0 position-absolute top-0 start-0 m-3 z-1" style={{ fontSize: '11px', letterSpacing: '1px' }}>TOP STORIES</span>
                         <div className="position-absolute bottom-0 w-100 p-4 z-1" style={{ background: 'linear-gradient(transparent, rgba(0,0,0,0.9))' }}>
                             <span className="badge bg-info rounded-0 mb-2" style={{ fontSize: '10px' }}>LATEST</span>
@@ -81,7 +114,16 @@ const FeaturedNews = ({ articles }) => {
                 {/* Right Column */}
                 <div className="col-md-3 d-flex flex-column" style={{ gap: '4px' }}>
                     <a href={displayArticles[3].url || "#"} target="_blank" rel="noreferrer" className="position-relative d-block text-decoration-none" style={{ height: '220px' }}>
-                        <img src={displayArticles[3].urlToImage || defaultImg} className="w-100 h-100 object-fit-cover" alt="news" />
+                        <img
+                            src={displayArticles[3].urlToImage || defaultImg}
+                            loading="lazy"
+                            onError={(e) => {
+                                e.target.onerror = null
+                                e.target.src = defaultImg
+                            }}
+                            className="w-100 h-100 object-fit-cover"
+                            alt="news"
+                        />
                         <div className="position-absolute bottom-0 w-100 p-3" style={{ background: 'linear-gradient(transparent, rgba(0,0,0,0.8))' }}>
                             <span className="badge bg-info rounded-0 mb-1" style={{ fontSize: '9px' }}>UPDATE</span>
                             <h6 className="text-white fw-bold mb-1" style={{ fontSize: '13px' }}>{displayArticles[3].title ? displayArticles[3].title.slice(0, 50) + "..." : "No Title"}</h6>
@@ -89,7 +131,16 @@ const FeaturedNews = ({ articles }) => {
                         </div>
                     </a>
                     <a href={displayArticles[4].url || "#"} target="_blank" rel="noreferrer" className="position-relative d-block text-decoration-none" style={{ height: '220px' }}>
-                        <img src={displayArticles[4].urlToImage || defaultImg} className="w-100 h-100 object-fit-cover" alt="news" />
+                        <img
+                            src={displayArticles[4].urlToImage || defaultImg}
+                            loading="lazy"
+                            onError={(e) => {
+                                e.target.onerror = null
+                                e.target.src = defaultImg
+                            }}
+                            className="w-100 h-100 object-fit-cover"
+                            alt="news"
+                        />
                         <div className="position-absolute bottom-0 w-100 p-3" style={{ background: 'linear-gradient(transparent, rgba(0,0,0,0.8))' }}>
                             <h6 className="text-white fw-bold mb-1" style={{ fontSize: '13px' }}>{displayArticles[4].title ? displayArticles[4].title.slice(0, 50) + "..." : "No Title"}</h6>
                             <span className="text-white-50" style={{ fontSize: '10px' }}><i className="bi bi-clock"></i> {new Date().toLocaleDateString()}</span>

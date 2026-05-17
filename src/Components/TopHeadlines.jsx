@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import defaultImg from '../assets/images.jpg';
 
-const TopHeadlines = ({ articles }) => {
+const TopHeadlines = ({ articles, loading }) => {
     const [startIndex, setStartIndex] = useState(0);
     const maxVisible = 4;
 
@@ -13,7 +13,21 @@ const TopHeadlines = ({ articles }) => {
         return () => clearInterval(timer);
     }, [articles]);
 
-    if (!articles || articles.length === 0) return null;
+    if ((!articles || articles.length === 0) && loading) {
+        return (
+            <div className="py-4 text-center text-muted" style={{ fontSize: '13px' }}>
+                Loading top headlines...
+            </div>
+        );
+    }
+
+    if (!articles || articles.length === 0) {
+        return (
+            <div className="py-4 text-center text-muted" style={{ fontSize: '13px' }}>
+                No top headlines available.
+            </div>
+        );
+    }
 
     const navLeft = () => {
         setStartIndex(prev => Math.max(0, prev - 1));
@@ -34,7 +48,16 @@ const TopHeadlines = ({ articles }) => {
             <div className="d-flex gap-3 overflow-hidden justify-content-center" style={{ width: '100%', maxWidth: '1150px' }}>
                 {displayArticles.map((art, idx) => (
                     <div key={idx} className="d-flex bg-white border flex-fill" style={{ minWidth: '240px', maxWidth: '280px', height: '100px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
-                        <img src={art.urlToImage || defaultImg} alt="thumb" style={{ width: '90px', height: '100%', objectFit: 'cover' }} />
+                        <img
+                            src={art.urlToImage || defaultImg}
+                            alt="thumb"
+                            loading="lazy"
+                            onError={(e) => {
+                                e.target.onerror = null
+                                e.target.src = defaultImg
+                            }}
+                            style={{ width: '90px', height: '100%', objectFit: 'cover' }}
+                        />
                         <div className="p-2 d-flex flex-column justify-content-center w-100 overflow-hidden">
                             <span className="text-info fw-bold mb-1" style={{ fontSize: '10px' }}>NEWS</span>
                             <h6 className="mb-1 text-truncate pe-2 w-100" style={{ fontSize: '11px', fontWeight: 'bold', lineHeight: '1.4' }}>{art.title || "No Title"}</h6>
