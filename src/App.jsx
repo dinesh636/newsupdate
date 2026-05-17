@@ -1,13 +1,38 @@
-import React, { useState } from 'react'
-import Navbar from './Components/Navbar'
+import React, { useState, useEffect } from 'react'
+import TopBar from './Components/TopBar'
+import HeaderLogo from './Components/HeaderLogo'
+import TopHeadlines from './Components/TopHeadlines'
+import MainMenu from './Components/MainMenu'
+import FeaturedNews from './Components/FeaturedNews'
+import BreakingNews from './Components/BreakingNews'
 import NavBoard from './Components/NavBoard'
+import './index.css'
 
 const App = () => {
-  const [category , setcategory] = useState("general");
+  const [category, setCategory] = useState("general");
+  const [articles, setArticles] = useState([]);
+
+  useEffect(() => {
+    const fetchCategory = category === 'home' || category === 'general' ? 'general' : category;
+    const url = `https://newsapi.org/v2/top-headlines?country=us&category=${fetchCategory}&apiKey=${import.meta.env.VITE_API_KEY}&pageSize=40`
+
+    fetch(url)
+      .then(res => res.json())
+      .then(data => setArticles(data.articles || []))
+      .catch(err => console.log(err))
+  }, [category])
+
   return (
-    <div>
-      <Navbar setcategory = {setcategory} />
-      <NavBoard category = {category} />
+    <div className="main-wrapper">
+      <div className="main-container bg-white shadow-sm border-0">
+        <TopBar />
+        <HeaderLogo />
+        <TopHeadlines articles={articles} />
+        <MainMenu setcategory={setCategory} category={category} />
+        <FeaturedNews articles={articles} />
+        <BreakingNews articles={articles} />
+        <NavBoard articles={articles} />
+      </div>
     </div>
   )
 }
